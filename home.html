@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <title>Studynest – Home</title>
@@ -8,92 +9,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="global.css">
     <style>
-        body {
-            background: #a6c7c9;
-            min-height: 100vh;
-        }
-        .sidebar {
-            width: 220px;
-            background: #23272b;
-            color: #fff;
-            min-height: 100vh;
-            position: fixed;
-            top: 0; left: 0;
-            display: flex;
-            flex-direction: column;
-            padding: 16px 0;
-            z-index: 10;
-        }
-        .sidebar-logo-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 28px;
-        }
-        .sidebar .logo {
-            width: 95px;
-            height: 95px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 7px;
-            object-fit: contain;
-        }
-        .sidebar .nav-link {
-            color: #b0c4d4;
-            font-size: 1.13rem;
-            padding: 10px 30px;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-            gap: 12px;
-            margin-bottom: 6px;
-            transition: background 0.15s, color 0.15s;
-        }
-        .sidebar .nav-link.active, .sidebar .nav-link:hover {
-            background: #37517e;
-            color: #fff;
-        }
-        .sidebar .section-title {
-            margin: 22px 0 8px 30px;
-            font-size: 1rem;
-            color: #91b5c8;
-            font-weight: 500;
-        }
-        .sidebar .logout-link {
-            margin-top: auto;
-            color: #f88484;
-            padding: 10px 30px;
-        }
-        .main-content {
-            margin-left: 230px;
-            padding: 34px 34px 0 34px;
-        }
-        .header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-        }
-        .profile-link {
-            color: #23272b;
-            background: #f6fafb;
-            border-radius: 50%;
-            padding: 10px;
-            font-size: 1.6rem;
-            display: flex;
-            align-items: center;
-            transition: background 0.2s;
-        }
-        .profile-link:hover {
-            background: #dde7e9;
-        }
         .task-cards {
             display: flex;
             gap: 32px;
             margin-bottom: 38px;
         }
+
         .task-card {
             background: #fff;
             border-radius: 15px;
@@ -106,6 +29,7 @@
             align-items: center;
             overflow: hidden;
         }
+
         .task-card .task-image {
             background: #cfd8dc;
             width: 100%;
@@ -116,12 +40,14 @@
             font-size: 2.5rem;
             color: #7b8fa5;
         }
+
         .task-card .task-title {
             font-size: 1.1rem;
             font-weight: 500;
             padding: 8px;
             color: #23272b;
         }
+
         .calendar-box {
             background: #fff;
             border-radius: 15px;
@@ -129,22 +55,47 @@
             padding: 20px 20px 12px 20px;
             margin-top: 18px;
         }
+
         @media (max-width: 900px) {
-            .sidebar { width: 65px; }
-            .sidebar .nav-link span { display: none; }
-            .sidebar .section-title { display: none; }
-            .main-content { margin-left: 75px; padding: 16px; }
-            .task-cards { flex-direction: column; gap: 18px;}
-            .sidebar-logo-box { margin-bottom: 12px; }
-            .sidebar .logo { width: 45px; height: 45px; }
+            .sidebar {
+                width: 65px;
+            }
+
+            .sidebar .nav-link span {
+                display: none;
+            }
+
+            .sidebar .section-title {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 75px;
+                padding: 16px;
+            }
+
+            /* .task-cards {
+                flex-direction: column;
+                gap: 18px;
+            }*/
+
+            .sidebar-logo-box {
+                margin-bottom: 12px;
+            }
+
+            .sidebar .logo {
+                width: 45px;
+                height: 45px;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-logo-box mb-3">
-            <img src="logo.png" class="logo" alt="Studynest Logo">
+            <img src="images/logo.png" class="logo" alt="Studynest Logo">
         </div>
         <a href="home.html" class="nav-link active"><i class="bi bi-house-door"></i> <span>Home</span></a>
         <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
@@ -154,8 +105,8 @@
         <a href="#" class="nav-link"><span>SEW</span></a>
         <a href="collections.html" class="nav-link"><span>Collections</span></a>
         <div class="section-title">Organisation</div>
-        <a href="todo.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
-        <a href="calendar.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
+        <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
+        <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
         <a href="trash.html" class="nav-link logout-link"><i class="bi bi-trash"></i> <span>Trash</span></a>
     </div>
 
@@ -169,20 +120,29 @@
         </div>
         <div class="mb-2" style="font-size:1.12rem;color:#374151;">Dashboard</div>
         <h3 class="mb-3" style="font-weight:700;">Deine Aufgaben</h3>
-        <div class="task-cards">
-            <div class="task-card">
-                <div class="task-image"><i class="bi bi-journal-text"></i></div>
-                <div class="task-title">Mathe Hausübung</div>
-            </div>
-            <div class="task-card">
-                <div class="task-image"><i class="bi bi-book"></i></div>
-                <div class="task-title">SEW Referat</div>
-            </div>
-            <div class="task-card">
-                <div class="task-image"><i class="bi bi-check2-square"></i></div>
-                <div class="task-title">Englisch Vokabeln</div>
+        <div class="container">
+            <div class="row gy-4 gx-4">
+                <div class="col-sm-6 col-md-4">
+                    <div class="task-card">
+                        <div class="task-image"><i class="bi bi-journal-text"></i></div>
+                        <div class="task-title">Mathe Hausübung</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="task-card">
+                        <div class="task-image"><i class="bi bi-book"></i></div>
+                        <div class="task-title">SEW Referat</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="task-card">
+                        <div class="task-image"><i class="bi bi-check2-square"></i></div>
+                        <div class="task-title">Englisch Vokabeln</div>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="calendar-box">
             <h5 style="color:#2563eb;">Kalender</h5>
             <table class="table table-sm mb-1">
@@ -211,4 +171,5 @@
         </div>
     </div>
 </body>
+
 </html>
