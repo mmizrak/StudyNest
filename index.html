@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <title>Studynest – Plan Smart, Learn Better</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
-        body {
-            background: #a6c7c9;
-            min-height: 100vh;
-        }
         .center-content {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            background-color: #a6c7c9;
         }
+
         .logo-large {
             width: 300px;
             max-width: 80vw;
         }
+
         .studynest-title {
             font-weight: 700;
             font-size: 2.6rem;
@@ -28,30 +29,151 @@
             margin-top: 1rem;
             color: #222;
         }
+
         .slogan {
             font-size: 1.4rem;
             color: #222;
             margin-bottom: 2rem;
             font-weight: 400;
         }
+
         .btn-main {
             min-width: 140px;
             font-size: 1.1rem;
             border-radius: 8px;
         }
+
         .btn-outline-primary {
             border-width: 2px;
         }
+
+        .accountButtons {
+            margin-top: 15px;
+        }
+
+        .teamDescription {
+            height: 200px;
+        }
+
+        #teamTitle {
+            font-size: 40px;
+            font-weight: 500;
+            margin-left: 15px;
+        }
+
+        .team-card {
+            border: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
     </style>
 </head>
+
 <body>
     <div class="center-content">
-        <img src="logo.png" alt="Studynest Logo" class="logo-large mb-3">
+        <img src="images/logo.png" alt="Studynest Logo" class="logo-large mb-3">
         <div class="studynest-title">“Plan Smart, Learn better”</div>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 accountButtons">
             <a href="register.html" class="btn btn-primary btn-main">Registrieren</a>
             <a href="login.html" class="btn btn-outline-primary btn-main">Anmelden</a>
         </div>
     </div>
+    <!--<div class="container-fluid bg-white teamDescription">
+        <p id="teamTitle">Team</p>
+    </div>-->
+    <div class="container-fluid bg-white py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Das Team</h2>
+            <div class="row g-4 justify-content-center">
+
+                <!-- Team Member 1 -->
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card team-card text-center">
+                        <img src="images/philipGesichtNeu.PNG" class="card-img-top rounded-circle mx-auto mt-4"
+                            alt="Team Member 1" style="width: 120px; height: 120px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">Philip Djurak</h5>
+                            <p class="text-muted small">Full-Stack Developer, UI/UX Designer</p>
+                            <p class="card-text">Philip ist verantwortlich für die Sicherstellung einer
+                                benutzerfreundlichen Oberfläche und für die Datenbankanbindung</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card team-card text-center">
+                        <img src="images/heler.jpg" class="card-img-top rounded-circle mx-auto mt-4" alt="Team Member 2"
+                            style="width: 120px; height: 120px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">Fabian Heler</h5>
+                            <p class="text-muted small">Full-Stack Developer, Tester</p>
+                            <p class="card-text">Fabian ist für die Sicherstellung der fehlerfreien Funktionalität sowie
+                                das Testen der Funktionen zuständig</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card team-card text-center">
+                        <img src="images/mizrak.jpg" class="card-img-top rounded-circle mx-auto mt-4"
+                            alt="Team Member 3" style="width: 120px; height: 120px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">Max Mizrak</h5>
+                            <p class="text-muted small">Front-End-Developer, UI/UX Designer</p>
+                            <p class="card-text">Mizrak ist für die Erschaffung und Gewährleistung einer
+                                benutzerfreundlichen Oberfläche zuständig</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row text-center text-md-start">
+
+                <!-- Legal Links -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="text-uppercase">Rechtliches</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Impressum</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Datenschutz</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">AGB</a></li>
+                    </ul>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="text-uppercase">Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Startseite</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Über uns</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Kontakt</a></li>
+                    </ul>
+                </div>
+
+                <!-- Socials -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="text-uppercase">Social Media</h5>
+                    <a href="#" class="text-light me-3"><i class="bi bi-instagram "></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-twitter-x"></i></a>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary" />
+            <div class="text-center small">
+                &copy; 2025 StudyNest. Alle Rechte vorbehalten.
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>
