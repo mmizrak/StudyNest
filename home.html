@@ -87,6 +87,11 @@
                 width: 45px;
                 height: 45px;
             }
+
+            .custom-dropdown {
+                background-color: #23272b !important;
+                border-radius: 10px !important;
+            }
         }
     </style>
 </head>
@@ -107,16 +112,27 @@
         <div class="section-title">Organisation</div>
         <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
         <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
-        <a href="trash.html" class="nav-link logout-link"><i class="bi bi-trash"></i> <span>Trash</span></a>
+        <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
+            <span>Abmelden</span></a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="header-row">
             <h2>Guten Tag, <span class="text-primary">"dein Name"</span></h2>
-            <a href="profile.html" class="profile-link" title="Profil">
-                <i class="bi bi-person-circle"></i>
-            </a>
+            <div class="dropdown text-end">
+                <a href="#" class="profile-link d-flex align-items-center text-decoration-none text-dark"
+                    id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="profile.html">Konto</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="logout.php">Abmelden</a></li>
+                </ul>
+            </div>
         </div>
         <div class="mb-2" style="font-size:1.12rem;color:#374151;">Dashboard</div>
         <h3 class="mb-3" style="font-weight:700;">Deine Aufgaben</h3>
@@ -170,6 +186,9 @@
             <a href="calendar.html" style="font-size:1rem;color:#2563eb;">+ Add Event</a>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

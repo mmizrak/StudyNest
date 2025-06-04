@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .main-content {
+            margin-left: 220px;
+            padding: 40px 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .profile-image-label {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .profile-image-label img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(35, 39, 43, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-image-label:hover .profile-image-overlay {
+            opacity: 1;
+        }
+
+        .overlay-icon {
+            color: #fff;
+            font-size: 1.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo-box mb-3">
+            <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
+        </div>
+        <a href="home.html" class="nav-link active"><i class="bi bi-house-door"></i> <span>Home</span></a>
+        <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
+        <a href="notes.html" class="nav-link"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
+        <div class="section-title">Fächer</div>
+        <a href="#" class="nav-link"><span>Mathe</span></a>
+        <a href="#" class="nav-link"><span>SEW</span></a>
+        <a href="#" class="nav-link"><span>Collections</span></a>
+        <div class="section-title">Organisation</div>
+        <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
+        <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
+        <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
+            <span>Abmelden</span></a>
+    </div>
+    <div class="main-content">
+        <div class="container-fluid">
+
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-image-wrapper">
+                    <label for="profileUpload" class="profile-image-label">
+                        <img id="profileImage"
+                            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg"
+                            alt="Profile Picture">
+                        <div class="profile-image-overlay">
+                            <i class="bi bi-image overlay-icon"></i>
+                        </div>
+                    </label>
+                    <input type="file" id="profileUpload" accept="image/*" style="display: none"
+                        onchange="updateProfileImage(event)">
+                </div>
+                <div>
+                    <h3>Max Mustermann</h3>
+                    <p class="text-muted mb-0">mm@gmail.com</p>
+                </div>
+            </div>
+
+            <!-- Profile Info -->
+            <h5 class="section-title">Account Informationen</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Vorname</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="Max" disabled>
+                        <button class="btn btn-dark" type="button" id="editUsernameBtn"><i
+                                class="bi bi-pencil-square"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nachname</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="Mustermann" disabled>
+                        <button class="btn btn-dark" type="button" id="editUsernameBtn"><i
+                                class="bi bi-pencil-square"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" value="mm@gmail.com" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Passwort</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" value="helloWorld" disabled>
+                        <button class="btn btn-outline-dark" type="button" id="togglePassword">
+                            <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <h5 class="section-title">Settings</h5>
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                <label class="form-check-label" for="darkModeSwitch">Dark Mode</label>
+            </div>
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" id="notificationsSwitch" checked>
+                <label class="form-check-label" for="notificationsSwitch">Enable Notifications</label>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function updateProfileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            const passwordInput = document.getElementById("password");
+            const icon = document.getElementById("toggleIcon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.replace("bi-eye-slash", "bi-eye");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.replace("bi-eye", "bi-eye-slash");
+            }
+        });
+    </script>
+</body>
+
+</html>
