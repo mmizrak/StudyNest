@@ -1,8 +1,8 @@
 <?php
 
 $servername = "projekte.tgm.ac.at";
-$username = "db3dHIT_s6";
-$password = "fe7ieNgu";
+$username = "";
+$password = "";
 
 
 try {
