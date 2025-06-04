@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Studynest – Projekte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="global.css">
+    <style>
+        /* Stiluri pentru To-Do List */
+        .todo-container {
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-text {
+            flex-grow: 1;
+            font-size: 1.1rem;
+        }
+
+        .task-text[contenteditable="true"] {
+            border-bottom: 1px dashed #999;
+            outline: none;
+            cursor: text;
+        }
+
+        .status-select {
+            width: 110px;
+        }
+
+        .btn-delete {
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .btn-delete:hover {
+            color: #a71d2a;
+        }
+
+        .input-group > input {
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .task-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .status-select {
+                width: 100%;
+            }
+
+            .btn-delete {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+
+<body>
+   <!-- Sidebar -->
+    <div class="sidebar">
+    <div class="sidebar-logo-box mb-3">
+        <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
+    </div>
+    <a href="home.html" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a>
+    <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
+    <a href="notes.html" class="nav-link active"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
+    
+    <!-- Fächer removed -->
+    
+    <div class="section-title">Organisation</div>
+    <a href="projekte.html" class="nav-link"><i class="bi bi-kanban"></i> <span>Projekte</span></a>
+    <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
+    <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
+    <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
+        <span>Abmelden</span></a>
+    </div>
+
+    <div class="main-content">
+        <div class="header-row">
+            <h2>Projekte</h2>
+            <a href="profile.html" class="profile-link" title="Profil">
+                <i class="bi bi-person-circle"></i>
+            </a>
+        </div>
+
+        <div class="project-container">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Beschreibung</th>
+                        <th>Details</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th style="width: 140px;">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody id="projectList"></tbody>
+            </table>
+
+            <hr>
+
+            <h5 id="formTitle">Neues Projekt hinzufügen</h5>
+            <div class="mb-3">
+                <label for="projectName" class="form-label">Projektname</label>
+                <input type="text" id="projectName" class="form-control" placeholder="Name eingeben">
+            </div>
+            <div class="mb-3">
+                <label for="projectDesc" class="form-label">Beschreibung</label>
+                <textarea id="projectDesc" class="form-control" rows="2" placeholder="Beschreibung eingeben"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="projectDetails" class="form-label">Details</label>
+                <textarea id="projectDetails" class="form-control" rows="2" placeholder="Details eingeben"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="projectDeadline" class="form-label">Deadline</label>
+                <input type="date" id="projectDeadline" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="projectStatus" class="form-label">Status</label>
+                <select id="projectStatus" class="form-select">
+                    <option value="Offen">Offen</option>
+                    <option value="In Bearbeitung">In Bearbeitung</option>
+                    <option value="Abgeschlossen">Abgeschlossen</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="addUpdateBtn" onclick="submitProject()">Projekt hinzufügen</button>
+            <button class="btn btn-secondary d-none" id="cancelEditBtn" onclick="cancelEdit()">Abbrechen</button>
+        </div>
+    </div>
+
+    <script>
+        let projects = [];
+        let editingIndex = null;
+
+        // Încarcă datele din localStorage la start
+        function loadProjects() {
+            const saved = localStorage.getItem("projects");
+            if (saved) {
+                projects = JSON.parse(saved);
+            }
+        }
+
+        // Salvează datele în localStorage
+        function saveProjects() {
+            localStorage.setItem("projects", JSON.stringify(projects));
+        }
+
+        function renderProjectList() {
+            const tbody = document.getElementById("projectList");
+            tbody.innerHTML = "";
+
+            projects.forEach((proj, i) => {
+                const row = document.createElement("tr");
+
+                const nameCell = document.createElement("td");
+                nameCell.textContent = proj.name;
+                row.appendChild(nameCell);
+
+                const descCell = document.createElement("td");
+                descCell.textContent = proj.description;
+                row.appendChild(descCell);
+
+                const detailsCell = document.createElement("td");
+                detailsCell.textContent = proj.details || "";
+                row.appendChild(detailsCell);
+
+                const deadlineCell = document.createElement("td");
+                deadlineCell.textContent = proj.deadline || "";
+                row.appendChild(deadlineCell);
+
+                const statusCell = document.createElement("td");
+                statusCell.textContent = proj.status || "Offen";
+                row.appendChild(statusCell);
+
+                const actionsCell = document.createElement("td");
+
+                const editBtn = document.createElement("button");
+                editBtn.className = "btn btn-sm btn-outline-primary me-2";
+                editBtn.innerHTML = '<i class="bi bi-pencil"></i>';
+                editBtn.title = "Bearbeiten";
+                editBtn.onclick = () => editProject(i);
+
+                const delBtn = document.createElement("button");
+                delBtn.className = "btn btn-sm btn-outline-danger";
+                delBtn.innerHTML = '<i class="bi bi-trash"></i>';
+                delBtn.title = "Löschen";
+                delBtn.onclick = () => deleteProject(i);
+
+                actionsCell.appendChild(editBtn);
+                actionsCell.appendChild(delBtn);
+                row.appendChild(actionsCell);
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function submitProject() {
+            const nameInput = document.getElementById("projectName");
+            const descInput = document.getElementById("projectDesc");
+            const detailsInput = document.getElementById("projectDetails");
+            const deadlineInput = document.getElementById("projectDeadline");
+            const statusInput = document.getElementById("projectStatus");
+
+            const name = nameInput.value.trim();
+            const description = descInput.value.trim();
+            const details = detailsInput.value.trim();
+            const deadline = deadlineInput.value;
+            const status = statusInput.value;
+
+            if (!name) {
+                alert("Bitte geben Sie einen Projektnamen ein.");
+                return;
+            }
+
+            if (editingIndex === null) {
+                projects.push({ name, description, details, deadline, status });
+            } else {
+                projects[editingIndex] = { name, description, details, deadline, status };
+                editingIndex = null;
+
+                document.getElementById("formTitle").textContent = "Neues Projekt hinzufügen";
+                document.getElementById("addUpdateBtn").textContent = "Projekt hinzufügen";
+                document.getElementById("cancelEditBtn").classList.add("d-none");
+            }
+
+            // Reset formular
+            nameInput.value = "";
+            descInput.value = "";
+            detailsInput.value = "";
+            deadlineInput.value = "";
+            statusInput.value = "Offen";
+
+            saveProjects();
+            renderProjectList();
+        }
+
+        function editProject(index) {
+            editingIndex = index;
+            const proj = projects[index];
+
+            document.getElementById("projectName").value = proj.name;
+            document.getElementById("projectDesc").value = proj.description;
+            document.getElementById("projectDetails").value = proj.details || "";
+            document.getElementById("projectDeadline").value = proj.deadline || "";
+            document.getElementById("projectStatus").value = proj.status || "Offen";
+
+            document.getElementById("formTitle").textContent = "Projekt bearbeiten";
+            document.getElementById("addUpdateBtn").textContent = "Speichern";
+            document.getElementById("cancelEditBtn").classList.remove("d-none");
+        }
+
+        function cancelEdit() {
+            editingIndex = null;
+            document.getElementById("projectName").value = "";
+            document.getElementById("projectDesc").value = "";
+            document.getElementById("projectDetails").value = "";
+            document.getElementById("projectDeadline").value = "";
+            document.getElementById("projectStatus").value = "Offen";
+
+            document.getElementById("formTitle").textContent = "Neues Projekt hinzufügen";
+            document.getElementById("addUpdateBtn").textContent = "Projekt hinzufügen";
+            document.getElementById("cancelEditBtn").classList.add("d-none");
+        }
+
+        function deleteProject(index) {
+            if (confirm("Möchten Sie dieses Projekt wirklich löschen?")) {
+                projects.splice(index, 1);
+                if (editingIndex === index) {
+                    cancelEdit();
+                } else if (editingIndex !== null && index < editingIndex) {
+                    editingIndex--;
+                }
+                saveProjects();
+                renderProjectList();
+            }
+        }
+
+        loadProjects();
+        renderProjectList();
+    </script>
+</body>
+
+</html>

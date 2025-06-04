@@ -9,124 +9,267 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="global.css">
     <style>
-        .kanban-board {
-            display: flex;
-            gap: 32px;
-            margin-top: 22px;
+        /* Stiluri pentru To-Do List */
+        .todo-container {
+            margin-top: 20px;
         }
 
-        .kanban-column {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 1px 10px rgba(30, 60, 100, 0.08);
-            padding: 18px 14px 14px 14px;
-            flex: 1;
-            min-width: 240px;
-        }
-
-        .kanban-title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #37517e;
-        }
-
-        .kanban-card {
-            background: #23272b;
-            color: #fff;
-            border-radius: 9px;
-            padding: 22px 12px;
-            margin-bottom: 14px;
-            min-height: 90px;
+        .task-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+            gap: 12px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .kanban-add {
-            display: flex;
-            gap: 7px;
-            margin-top: 9px;
+        .task-text {
+            flex-grow: 1;
+            font-size: 1.1rem;
         }
 
-        .kanban-search {
-            width: 160px;
-            margin-right: 12px;
+        .task-text[contenteditable="true"] {
+            border-bottom: 1px dashed #999;
+            outline: none;
+            cursor: text;
         }
 
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 65px;
-            }
+        .status-select {
+            width: 110px;
+        }
 
-            .sidebar .nav-link span {
-                display: none;
-            }
+        .btn-delete {
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
 
-            .sidebar .section-title {
-                display: none;
-            }
+        .btn-delete:hover {
+            color: #a71d2a;
+        }
 
-            .main-content {
-                margin-left: 75px;
-                padding: 12px;
-            }
+        .input-group > input {
+            font-size: 1.1rem;
+        }
 
-            .kanban-board {
+        @media (max-width: 600px) {
+            .task-item {
                 flex-direction: column;
-                gap: 12px;
+                align-items: stretch;
+            }
+
+            .status-select {
+                width: 100%;
+            }
+
+            .btn-delete {
+                align-self: flex-end;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo-box mb-3">
-            <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
-        </div>
-        <a href="home.html" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
-        <a href="notes.html" class="nav-link"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
-        <div class="section-title">Fächer</div>
-        <a href="#" class="nav-link"><span>Mathe</span></a>
-        <a href="#" class="nav-link"><span>SEW</span></a>
-        <a href="collections.html" class="nav-link"><span>Collections</span></a>
-        <div class="section-title">Organisation</div>
-        <a href="To-Do.html" class="nav-link active"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
-        <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
-        <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
-            <span>Abmelden</span></a>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-logo-box mb-3">
+        <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
     </div>
-    <div class="main-content">
-        <div class="header-row">
-            <h2>To-Do-List</h2>
-            <a href="profile.html" class="profile-link" title="Profil">
-                <i class="bi bi-person-circle"></i>
-            </a>
+    <a href="home.html" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a>
+    <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
+    <a href="notes.html" class="nav-link active"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
+
+    <div class="section-title">Organisation</div>
+    <a href="projekte.html" class="nav-link"><i class="bi bi-kanban"></i> <span>Projekte</span></a>
+    <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
+    <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
+    <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
+        <span>Abmelden</span></a>
+</div>
+
+<div class="main-content">
+    <div class="header-row d-flex justify-content-between align-items-center mb-3">
+        <h2>To-Do-List</h2>
+        <a href="profile.html" class="profile-link" title="Profil">
+            <i class="bi bi-person-circle fs-2"></i>
+        </a>
+    </div>
+
+    <!-- Formular adăugare task nou -->
+    <div class="todo-container">
+        <div class="input-group mb-4">
+            <input id="new-task-input" type="text" class="form-control" placeholder="Neue Aufgabe hinzufügen..." aria-label="Neue Aufgabe">
+            <select id="new-task-status" class="form-select" style="max-width: 140px;">
+                <option value="todo" selected>To Do</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select>
+            <button id="add-task-btn" class="btn btn-primary" type="button">
+                <i class="bi bi-plus"></i> Hinzufügen
+            </button>
         </div>
-        <div class="d-flex align-items-center mb-3">
-            <span style="font-size:1.2rem;font-weight:600;">Board View</span>
-            <input type="text" class="form-control kanban-search ms-auto" placeholder="Search...">
-            <button class="btn btn-outline-secondary"><i class="bi bi-plus"></i></button>
-        </div>
-        <div class="kanban-board">
-            <div class="kanban-column">
-                <div class="kanban-title">To Do</div>
-                <div class="kanban-card">Mathe Hausübung</div>
-                <div class="kanban-card">Englisch Vokabeln lernen</div>
-            </div>
-            <div class="kanban-column">
-                <div class="kanban-title">Doing</div>
-                <div class="kanban-card">SEW Referat</div>
-            </div>
-            <div class="kanban-column">
-                <div class="kanban-title">Done</div>
-                <div class="kanban-card">Bio Zusammenfassung</div>
-            </div>
+
+        <!-- Lista de taskuri -->
+        <div id="tasks-list">
+            <!-- Task-urile vor apărea aici -->
         </div>
     </div>
+</div>
+
+<script>
+    // Referințe elemente
+    const inputTask = document.getElementById('new-task-input');
+    const selectStatus = document.getElementById('new-task-status');
+    const addBtn = document.getElementById('add-task-btn');
+    const tasksList = document.getElementById('tasks-list');
+
+    // --- LocalStorage key ---
+    const STORAGE_KEY = 'studynest-tasks';
+
+    // Funcție creare task element
+    function createTaskElement(text, status) {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task-item';
+
+        // Text editabil
+        const taskText = document.createElement('div');
+        taskText.className = 'task-text';
+        taskText.contentEditable = true;
+        taskText.textContent = text;
+        taskText.spellcheck = false;
+
+        // Dropdown pentru status
+        const statusSelect = document.createElement('select');
+        statusSelect.className = 'form-select status-select';
+        statusSelect.innerHTML = `
+            <option value="todo">To Do</option>
+            <option value="doing">Doing</option>
+            <option value="done">Done</option>
+        `;
+        statusSelect.value = status;
+
+        // Buton ștergere
+        const deleteBtn = document.createElement('i');
+        deleteBtn.className = 'bi bi-trash btn-delete';
+        deleteBtn.title = 'Löschen';
+
+        // Actualizează stilul task-ului în funcție de status
+        function updateTaskStyle() {
+            if (statusSelect.value === 'todo') {
+                taskDiv.style.backgroundColor = '#f8f9fa'; // gri deschis
+                taskText.style.textDecoration = 'none';
+                taskText.style.color = '#212529';
+            } else if (statusSelect.value === 'doing') {
+                taskDiv.style.backgroundColor = '#fff3cd'; // galben deschis
+                taskText.style.textDecoration = 'none';
+                taskText.style.color = '#856404';
+            } else if (statusSelect.value === 'done') {
+                taskDiv.style.backgroundColor = '#d4edda'; // verde deschis
+                taskText.style.textDecoration = 'line-through';
+                taskText.style.color = '#155724';
+            }
+        }
+
+        // Setează stil inițial
+        updateTaskStyle();
+
+        // Schimbă stilul la schimbarea statusului și salvează în localStorage
+        statusSelect.addEventListener('change', () => {
+            updateTaskStyle();
+            saveTasksToLocalStorage();
+        });
+
+        // Salvează modificările la text când utilizatorul iese din editare
+        taskText.addEventListener('blur', () => {
+            saveTasksToLocalStorage();
+        });
+
+        // Ștergere task + salvare
+        deleteBtn.addEventListener('click', () => {
+            taskDiv.remove();
+            saveTasksToLocalStorage();
+        });
+
+        // Adaugă elementele în div-ul task-ului
+        taskDiv.appendChild(taskText);
+        taskDiv.appendChild(statusSelect);
+        taskDiv.appendChild(deleteBtn);
+
+        return taskDiv;
+    }
+
+    // Funcție adăugare task nou
+    function addTask() {
+        const text = inputTask.value.trim();
+        const status = selectStatus.value;
+        if (text === '') {
+            alert('Bitte geben Sie eine Aufgabe ein.');
+            return;
+        }
+
+        const taskElem = createTaskElement(text, status);
+        tasksList.appendChild(taskElem);
+
+        inputTask.value = '';
+        inputTask.focus();
+
+        saveTasksToLocalStorage();
+    }
+
+    // Salvează toate task-urile în localStorage
+    function saveTasksToLocalStorage() {
+        const tasks = [];
+        tasksList.querySelectorAll('.task-item').forEach(taskDiv => {
+            const text = taskDiv.querySelector('.task-text').textContent.trim();
+            const status = taskDiv.querySelector('.status-select').value;
+            if(text !== '') {
+                tasks.push({ text, status });
+            }
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    // Încarcă task-urile din localStorage
+    function loadTasksFromLocalStorage() {
+        const tasksJSON = localStorage.getItem(STORAGE_KEY);
+        if (tasksJSON) {
+            try {
+                const tasks = JSON.parse(tasksJSON);
+                tasks.forEach(task => {
+                    tasksList.appendChild(createTaskElement(task.text, task.status));
+                });
+            } catch (e) {
+                console.error('Error parsing tasks from localStorage', e);
+            }
+        } else {
+            // Dacă nu există în localStorage, poți popula cu task-urile inițiale (optional)
+            const initialTasks = [
+                { text: 'Mathe Hausübung', status: 'todo' },
+                { text: 'Englisch Vokabeln lernen', status: 'todo' },
+                { text: 'SEW Referat vorbereiten', status: 'doing' },
+                { text: 'Bio Zusammenfassung abschließen', status: 'done' }
+            ];
+            initialTasks.forEach(task => {
+                tasksList.appendChild(createTaskElement(task.text, task.status));
+            });
+            saveTasksToLocalStorage();
+        }
+    }
+
+    // Evenimente
+    addBtn.addEventListener('click', addTask);
+    inputTask.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTask();
+        }
+    });
+
+    // La încărcare pagină, încarcă task-urile
+    loadTasksFromLocalStorage();
+</script>
 </body>
 
 </html>

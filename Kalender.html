@@ -13,7 +13,7 @@
             background: #fff;
             border-radius: 14px;
             box-shadow: 0 1px 10px rgba(30, 60, 100, 0.08);
-            padding: 20px 18px 20px 18px;
+            padding: 20px;
         }
 
         .calendar-list {
@@ -25,10 +25,13 @@
             font-size: 0.98rem;
         }
 
-        .add-event-link {
-            color: #2563eb;
-            font-size: 1rem;
-            cursor: pointer;
+        .add-event-section {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
         }
 
         .week-table {
@@ -43,15 +46,12 @@
             padding: 8px 6px;
             text-align: center;
             min-width: 75px;
+            vertical-align: top;
         }
 
         .week-table th {
             background: #f3f6fa;
             font-weight: 600;
-        }
-
-        .week-table td {
-            background: #fff;
         }
 
         .week-table .time-col {
@@ -79,10 +79,7 @@
                 width: 65px;
             }
 
-            .sidebar .nav-link span {
-                display: none;
-            }
-
+            .sidebar .nav-link span,
             .sidebar .section-title {
                 display: none;
             }
@@ -101,22 +98,23 @@
 </head>
 
 <body>
+   <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-logo-box mb-3">
-            <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
-        </div>
-        <a href="home.html" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
-        <a href="notes.html" class="nav-link"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
-        <div class="section-title">Fächer</div>
-        <a href="#" class="nav-link"><span>Mathe</span></a>
-        <a href="#" class="nav-link"><span>SEW</span></a>
-        <a href="collections.html" class="nav-link"><span>Collections</span></a>
-        <div class="section-title">Organisation</div>
-        <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
-        <a href="Kalender.html" class="nav-link active"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
-        <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
-            <span>Abmelden</span></a>
+    <div class="sidebar-logo-box mb-3">
+        <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
+    </div>
+    <a href="home.html" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a>
+    <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
+    <a href="notes.html" class="nav-link active"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
+    
+    <!-- Fächer removed -->
+    
+    <div class="section-title">Organisation</div>
+    <a href="projekte.html" class="nav-link"><i class="bi bi-kanban"></i> <span>Projekte</span></a>
+    <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
+    <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
+    <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
+        <span>Abmelden</span></a>
     </div>
     <div class="main-content">
         <div class="header-row">
@@ -127,111 +125,172 @@
         </div>
         <div class="calendar-container">
             <div>
-                <b>Calendar</b>
-                <table class="table table-sm calendar-list mb-1">
-                    <tbody>
-                        <tr>
-                            <td>12/10/2008 6:00 AM</td>
-                            <td>Mathe Schularbeit</td>
-                        </tr>
-                        <tr>
-                            <td>12/18/2008 6:00 AM</td>
-                            <td>SEW Präsentation</td>
-                        </tr>
-                        <tr>
-                            <td>12/25/2008 6:00 AM</td>
-                            <td>Weihnachtsferien</td>
-                        </tr>
-                    </tbody>
+                <b>Kalender</b>
+                <table class="table table-sm calendar-list mb-1" id="eventList">
+                    <tbody></tbody>
                 </table>
-                <span class="add-event-link">+ Add Event</span>
+                <div class="add-event-section">
+                    <input type="text" id="eventTitle" class="form-control form-control-sm" placeholder="Titel des Ereignisses">
+                    <input type="datetime-local" id="eventDate" class="form-control form-control-sm">
+                    <button class="btn btn-primary btn-sm" onclick="addEvent()">Ereignis hinzufügen</button>
+                </div>
             </div>
             <div class="week-header mt-4">
-                <button class="arrow-btn"><i class="bi bi-arrow-left-circle"></i></button>
-                <span style="font-size:1.15rem;font-weight:600;">Week 13</span>
-                <button class="arrow-btn"><i class="bi bi-arrow-right-circle"></i></button>
-                <span style="margin-left:16px;">
-                    <button class="btn btn-outline-primary btn-sm">Day</button>
-                </span>
+                <button class="arrow-btn" onclick="changeWeek(-1)"><i class="bi bi-arrow-left-circle"></i></button>
+                <span id="weekDisplay" style="font-size:1.15rem;font-weight:600;">Woche</span>
+                <button class="arrow-btn" onclick="changeWeek(1)"><i class="bi bi-arrow-right-circle"></i></button>
             </div>
-            <table class="week-table">
+            <table class="week-table" id="calendarTable">
                 <thead>
                     <tr>
                         <th class="time-col"></th>
-                        <th>Sunday</th>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
-                        <th>Friday</th>
-                        <th>Saturday</th>
+                        <th>Sonntag</th>
+                        <th>Montag</th>
+                        <th>Dienstag</th>
+                        <th>Mittwoch</th>
+                        <th>Donnerstag</th>
+                        <th>Freitag</th>
+                        <th>Samstag</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-col">08:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">09:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">10:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">11:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">12:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">13:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
+                <tbody id="calendarBody"></tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        let events = [];
+        let currentWeekOffset = 0;
+        const storageKey = 'studynestEvents';
+
+        function formatDateAT(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString("de-AT", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+
+        function getStartOfWeek(offset = 0) {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(now.setDate(diff + offset * 7));
+            monday.setHours(0, 0, 0, 0);
+            return monday;
+        }
+
+        function saveEvents() {
+            localStorage.setItem(storageKey, JSON.stringify(events));
+        }
+
+        function loadEvents() {
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                events = JSON.parse(saved);
+            }
+        }
+
+        function renderCalendar() {
+            const startOfWeek = getStartOfWeek(currentWeekOffset);
+            const calendarBody = document.getElementById("calendarBody");
+            calendarBody.innerHTML = "";
+            const hours = [8, 9, 10, 11, 12, 13];
+
+            hours.forEach(hour => {
+                const row = document.createElement("tr");
+                const timeCell = document.createElement("td");
+                timeCell.classList.add("time-col");
+                timeCell.textContent = hour.toString().padStart(2, '0') + ":00";
+                row.appendChild(timeCell);
+
+                for (let i = 0; i < 7; i++) {
+                    const cell = document.createElement("td");
+                    const dayDate = new Date(startOfWeek);
+                    dayDate.setDate(startOfWeek.getDate() + i);
+                    dayDate.setHours(hour);
+
+                    const foundEvent = events.find(ev => {
+                        const evDate = new Date(ev.date);
+                        return evDate.getFullYear() === dayDate.getFullYear() &&
+                               evDate.getMonth() === dayDate.getMonth() &&
+                               evDate.getDate() === dayDate.getDate() &&
+                               evDate.getHours() === dayDate.getHours();
+                    });
+
+                    if (foundEvent) {
+                        cell.textContent = foundEvent.title;
+                        cell.style.backgroundColor = "#e0f2ff";
+                    }
+                    row.appendChild(cell);
+                }
+                calendarBody.appendChild(row);
+            });
+
+            const displayWeek = document.getElementById("weekDisplay");
+            const start = startOfWeek.toLocaleDateString("de-AT");
+            const end = new Date(startOfWeek);
+            end.setDate(startOfWeek.getDate() + 6);
+            displayWeek.textContent = `Woche: ${start} - ${end.toLocaleDateString("de-AT")}`;
+        }
+
+        function addEvent() {
+            const titleInput = document.getElementById("eventTitle");
+            const dateInput = document.getElementById("eventDate");
+            const title = titleInput.value.trim();
+            const date = dateInput.value;
+            if (!title || !date) return;
+
+            const event = { title, date };
+            events.push(event);
+            saveEvents();
+            titleInput.value = "";
+            dateInput.value = "";
+            renderEventList();
+            renderCalendar();
+        }
+
+        function deleteEvent(index) {
+            events.splice(index, 1);
+            saveEvents();
+            renderEventList();
+            renderCalendar();
+        }
+
+        function renderEventList() {
+            const tbody = document.querySelector("#eventList tbody");
+            tbody.innerHTML = "";
+            events.forEach((ev, i) => {
+                const row = document.createElement("tr");
+                const dateCell = document.createElement("td");
+                const titleCell = document.createElement("td");
+                const deleteCell = document.createElement("td");
+
+                dateCell.textContent = formatDateAT(ev.date);
+                titleCell.textContent = ev.title;
+                deleteCell.innerHTML = `<button class='btn btn-danger btn-sm' onclick='deleteEvent(${i})'>✖</button>`;
+
+                row.appendChild(dateCell);
+                row.appendChild(titleCell);
+                row.appendChild(deleteCell);
+                tbody.appendChild(row);
+            });
+        }
+
+        function changeWeek(offset) {
+            currentWeekOffset += offset;
+            renderCalendar();
+        }
+
+        window.onload = () => {
+            loadEvents();
+            renderEventList();
+            renderCalendar();
+        };
+    </script>
 </body>
 
 </html>

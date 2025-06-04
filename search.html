@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suche – Studynest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="global.css" />
+  <style>
+    body {
+      background-color: #f5f5f5;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 65px;
+      }
+
+      .sidebar .nav-link span {
+        display: none;
+      }
+
+      .sidebar .section-title {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 75px;
+        padding: 16px;
+      }
+
+      .task-cards {
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .sidebar-logo-box {
+        margin-bottom: 12px;
+      }
+
+      .sidebar .logo {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    .search-input {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 30px;
+    }
+
+    .event-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 10px;
+    }
+
+    .no-results {
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo-box mb-3">
+      <a href="home.html"><img src="images/logo.png" class="logo" alt="Studynest Logo"></a>
+    </div>
+    <a href="home.html" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a>
+    <a href="search.html" class="nav-link"><i class="bi bi-search"></i> <span>Search</span></a>
+    <a href="notes.html" class="nav-link active"><i class="bi bi-plus-square"></i> <span>Notiz</span></a>
+
+    <!-- Fächer removed -->
+
+    <div class="section-title">Organisation</div>
+    <a href="projekte.html" class="nav-link"><i class="bi bi-kanban"></i> <span>Projekte</span></a>
+    <a href="To-Do.html" class="nav-link"><i class="bi bi-list-task"></i> <span>To-Do List</span></a>
+    <a href="Kalender.html" class="nav-link"><i class="bi bi-calendar3"></i> <span>Kalender</span></a>
+    <a href="logout.php" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i>
+      <span>Abmelden</span></a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2>Suche nach Ereignissen</h2>
+    <input type="text" id="searchInput" class="form-control search-input" placeholder="Suchbegriff eingeben..." />
+
+    <div id="resultsContainer"></div>
+  </div>
+
+  <script>
+    // Preluăm evenimentele din localStorage sub cheia corectă "studynestEvents" sau array gol
+    const storedEventsRaw = JSON.parse(localStorage.getItem('studynestEvents')) || [];
+
+    // Optional: adaugă aici câteva evenimente hardcodate
+    const hardcodedEvents = [
+      { title: "Team Meeting", description: "Wöchentliches Teammeeting per Zoom", date: "2025-06-10T10:00:00" },
+      { title: "Projektdeadline", description: "Abgabe des neuen Projekts", date: "2025-06-15T23:59:00" }
+    ];
+
+    // Normalizează evenimentele din localStorage să aibă toate câmpurile necesare
+    const storedEvents = storedEventsRaw.map(ev => ({
+      title: ev.title || ev.description || "Ohne Titel",
+      description: ev.description || "",
+      date: ev.date || ""
+    }));
+
+    // Combină evenimentele hardcodate cu cele din localStorage
+    const allEvents = [...hardcodedEvents, ...storedEvents];
+
+    const searchInput = document.getElementById("searchInput");
+    const resultsContainer = document.getElementById("resultsContainer");
+
+    // Formatăm data în stil german
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Funcție pentru a verifica dacă un eveniment corespunde căutării
+    function eventMatchesQuery(event, query) {
+      const q = query.toLowerCase();
+      return Object.values(event).some(val =>
+        typeof val === "string" && val.toLowerCase().includes(q)
+      );
+    }
+
+    // Afișăm rezultatele filtrate
+    function renderResults(query) {
+      resultsContainer.innerHTML = "";
+
+      const trimmedQuery = query.trim().toLowerCase();
+
+      if (trimmedQuery === "") {
+        // Nu afișăm nimic dacă nu există text
+        return;
+      }
+
+      const filtered = allEvents.filter(event => eventMatchesQuery(event, trimmedQuery));
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = "<p class='no-results'>Keine passenden Ereignisse gefunden.</p>";
+        return;
+      }
+
+      filtered.forEach(event => {
+        const title = event.title || "Ohne Titel";
+        const description = event.description || "";
+        const dateFormatted = formatDate(event.date);
+
+        const div = document.createElement("div");
+        div.className = "event-card";
+        div.innerHTML = `
+          <h5>${title}</h5>
+          <p><strong>Datum:</strong> ${dateFormatted}</p>
+          <p>${description}</p>
+        `;
+        resultsContainer.appendChild(div);
+      });
+    }
+
+    // Ascultăm inputul pentru căutare live
+    searchInput.addEventListener("input", () => {
+      renderResults(searchInput.value);
+    });
+  </script>
+</body>
+
+</html>
